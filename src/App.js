@@ -1,8 +1,8 @@
 import React from 'react'
-import placeholder from './components/placeholder'
+import GithubProfiles from './components/GithubProfiles'
 
 const App = () => {
-  return <placeholder />
+  return <GithubProfiles />
 }
 
 export default App

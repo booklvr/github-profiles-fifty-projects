@@ -15,36 +15,27 @@ const GithubProfiles = () => {
       setUserInfo(data)
       console.log('userInfo', userInfo)
     } catch (err) {
-      console.log(error)
+      if (err.response.status === 400) {
+        setError('No profile with this username')
+      }
     }
   }
 
   const getRepos = async () => {
     try {
       const { data } = await axios(APIURL + username + '/repos?sort=created')
-      console.log('data', data)
+
       setUserRepo(data)
     } catch (err) {
-      console.log(error)
+      setError('Problem fetching Repos')
     }
   }
 
   const submitHandler = (e) => {
     e.preventDefault()
 
-    getUser(username)
     getRepos(username)
-
-    // try {
-    //   const { repoData } = await axios(
-    //     APIURL + username + '/repos?sort=created'
-    //   )
-    //   setUserRepo((userRepo) => [...userRepo, repoData])
-    // } catch (err) {
-    //   if (err.response.status == 404) {
-    //     setError('No repo found for this user')
-    //   }
-    // }
+    getUser(username)
   }
 
   return (
@@ -88,17 +79,18 @@ const GithubProfiles = () => {
                 </li>
               </ul>
               <div className='repos'>
-                {userRepo.slice(0, 5).map((repo, index) => (
-                  <a
-                    key={index}
-                    className='repo'
-                    href={repo.html_url}
-                    target='_blank'
-                    rel='noreferrer'
-                  >
-                    repo.name
-                  </a>
-                ))}
+                {userRepo.length > 0 &&
+                  userRepo.slice(0, 5).map((repo, index) => (
+                    <a
+                      key={index}
+                      className='repo'
+                      href={repo.html_url}
+                      target='_blank'
+                      rel='noreferrer'
+                    >
+                      {repo.name}
+                    </a>
+                  ))}
               </div>
             </div>
           </div>
